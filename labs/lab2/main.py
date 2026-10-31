@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 
 
-# Общий класс для всех объектов игры
 class GameObject:
     def __init__(self, object_id, name, x, y):
         self._id = object_id
@@ -22,7 +21,7 @@ class GameObject:
         return self._y
 
 
-# Юнит — игровой объект, у которого есть здоровье
+
 class Unit(GameObject):
     def __init__(self, object_id, name, x, y, hp):
         super().__init__(object_id, name, x, y)
@@ -40,21 +39,18 @@ class Unit(GameObject):
         self._hp = max(0, self._hp - damage)
 
 
-# Интерфейс для объектов, которые умеют атаковать
 class Attacker(ABC):
     @abstractmethod
     def attack(self, unit):
         pass
 
 
-# Интерфейс для объектов, которые умеют передвигаться
 class Moveable(ABC):
     @abstractmethod
     def move(self, x, y):
         pass
 
 
-# Лучник
 class Archer(Unit, Attacker, Moveable):
     def attack(self, unit):
         if self.isAlive():
@@ -65,7 +61,6 @@ class Archer(Unit, Attacker, Moveable):
         self._y = y
 
 
-# Постройка
 class Building(GameObject):
     def __init__(self, object_id, name, x, y, built):
         super().__init__(object_id, name, x, y)
@@ -78,14 +73,12 @@ class Building(GameObject):
         self._built = True
 
 
-# Крепость
 class Fort(Building, Attacker):
     def attack(self, unit):
         if self.isBuilt():
             unit.receiveDamage(30)
 
 
-# Дом на колёсах
 class MobileHouse(Building, Moveable):
     def move(self, x, y):
         if self.isBuilt():
@@ -93,7 +86,6 @@ class MobileHouse(Building, Moveable):
             self._y = y
 
 
-# Проверка работы классов
 if __name__ == "__main__":
     archer = Archer(1, "Лучник", 0, 0, 50)
     enemy = Unit(2, "Противник", 3, 4, 80)
